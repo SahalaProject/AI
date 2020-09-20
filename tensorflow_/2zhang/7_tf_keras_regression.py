@@ -70,6 +70,7 @@ model = keras.models.Sequential([
 ])
 
 print(model.summary())
+# 编译模型  计算目标函数
 model.compile(loss='mean_squared_error', optimizer=keras.optimizers.SGD(0.001)) # 编译model
 # 会调
 callbacks = [keras.callbacks.EarlyStopping(patience=5, min_delta=1e-3)]

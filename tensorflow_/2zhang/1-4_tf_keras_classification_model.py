@@ -104,7 +104,7 @@ model = keras.models.Sequential([keras.layers.Flatten(input_shape=[28, 28]),
                                  keras.layers.Dense(10, activation='softmax')
                                  ]) # 创建Sequential对象 时将值传入
 
-# 计算目标函数
+# 编译模型  计算目标函数
 # 如何选loss：reason for sparse: y-->index , 算子:  y-> one_hot ->[向量] ， 如果y已经是向量那只用 categorical_crossentropy， 反之在这里y只是个数用sparse_categorical_crossentropy
 # 调用这个model.compile函数的目的是： 将 损失函数/优化方法/metrics 加到图中去，同时将图固化下来
 model.compile(loss='sparse_categorical_crossentropy', optimizer=keras.optimizers.SGD(0.001), metrics=['accuracy']) # optimizer模型的求解方法， metrics指标
@@ -133,7 +133,7 @@ model.summary()  # 查看模型概况， 模型架构图 四层
 
 
 #3、#############################模型训练######################################
-# history ， fit返回中间运行的结果
+# history ， fit返回中间运行的结果, 之所以这么称呼是因为该方法使模型“适合”训练数据：
 history = model.fit(x_train, y_train, epochs=10, validation_data=(x_valid, y_valid)) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
 
 # print(history.history)
