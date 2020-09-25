@@ -142,6 +142,9 @@ history = model.fit(x_train, y_train, epochs=10, validation_data=(x_valid, y_val
 # 测试模型
 model.evaluate(x_test, y_test)
 
+# 保存模型
+model.save(filepath=r'./save_model/fashion_mnist')
+
 # 通过一张图打印出 训练值的变化过程
 def polt_learning_curves(history):
     pd.DataFrame(history.history).plot(figsize=(8, 5)) # DataFrame是pd中重要的数据结构, 图大小8和5
