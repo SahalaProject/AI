@@ -80,14 +80,14 @@ history = model.fit(x_train_scaler, y_train,
                     validation_data=(x_valid_scaled, y_valid),
                     epochs=100, callbacks=callbacks)
 
-# 打印学习曲线
-def plot_learning_curves(history):
-    pd.DataFrame(history.history).plot(figsize=(8, 5))
-    plt.grid(True)
-    plt.gca().set_ylim(0, 1)
+# 通过一张图打印出 训练值的变化过程
+def polt_learning_curves(history):
+    pd.DataFrame(history.history).plot(figsize=(8, 5)) # DataFrame是pd中重要的数据结构, 图大小8和5
+    plt.grid(True) # 显示网格
+    plt.gca().set_ylim(0, 3)# 坐标轴范围, 如果图显示不全调整下x,y轴
     plt.show()
 
-plot_learning_curves(history)
+polt_learning_curves(history) # 打印值训练值变化图
 
 # 测试模型
 test_result = model.evaluate(x_test_scaled, y_test)

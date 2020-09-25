@@ -119,7 +119,7 @@ print(test_result) # loss损失 和 准确率  [0.42931729555130005, 0.845799982
 def polt_learning_curves(history):
     pd.DataFrame(history.history).plot(figsize=(8, 5)) # DataFrame是pd中重要的数据结构, 图大小8和5
     plt.grid(True) # 显示网格
-    plt.gca().set_ylim(0, 1)# 坐标轴范围
+    plt.gca().set_ylim(0, 3)# 坐标轴范围, 如果图显示不全调整下x,y轴
     plt.show()
 
 polt_learning_curves(history) # 打印值训练值变化图

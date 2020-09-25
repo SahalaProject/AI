@@ -19,10 +19,12 @@ print(sys.version_info)
 for module in mpl, np, pd, sklearn, tf, keras:
     print(module.__name__, module.__version__)
 
+
 """
-分类模型创建/训练
-数据集下载失败：浏览器下载， 然后注销源码下载步骤 paths.append(get_file(fname, origin=base + fname, cache_subdir=dirname)) ，
-运行代码完成本地加载后，取消注释
+dropout 防止过拟合 ， 在最后一层添加
+激活函数 selu  中添加
+
+打开TensorBoard查看，callbacks/下 命令行： tensorboard --logdir=callbacks (pwd的路径，相对路径无效) , 将会构建个人服务器  http://localhost:6006/ 
 """
 
 #1、#############################分类模型数之据读取与展示######################################
@@ -39,52 +41,36 @@ print(x_train.shape, y_train.shape) # (55000, 28, 28) (55000,)
 print(x_valid.shape, y_valid.shape) # (5000, 28, 28) (5000,)
 print(x_test.shape, y_test.shape) # (10000, 28, 28) (10000,)
 
-# 得到数据集以后我们一般看一下里面图像是什么样的，有助于让我们了解数据集 也是机器学习很重要的一部分
-def shou_single_image(img_arr):
-    """
-    展示数据集中图片
-    :param img_arr: img是numpy数组
-    :return:
-    """
-    plt.imshow(img_arr, cmap='binary') # cmap颜色图谱，默认是rgb, 这里是黑白我们用binary二位图显示就可以
-    plt.show() # 展示图片
-
-# shou_single_image(x_train[1]) # 展示训练集第一张图
-
-# 更多图
-def show_imgs(n_rows, n_cols, x_data, y_data, class_names):
-    """
-
-    :param n_rows:
-    :param n_cols:
-    :param x_data: 显示图这个参数就可以
-    :param y_data: 图片对应类别名
-    :param class_names: 类别对应的索引
-    :return:
-    """
-    assert len(x_data) == len(y_data) # 验证样本数一致
-    assert n_rows * n_cols < len(x_data) # 行X列 <= 样本数
-    plt.figure(figsize=(n_cols * 1.4, n_rows * 1.6))  # 用plt定义一张大图
-    # 对每一行每一列放一张图片
-    for row in range(n_rows):
-        for col in range(n_cols):
-            index =  n_cols * row + col# 计算当前位置上放的图片的索引,(n_cols * row当前放慢的图片 + col就是这张图索引)
-            plt.subplot(n_rows, n_cols, index+1) # 在这张大图上画上子图,(这里index是1开始，我们的index是从0开始所以+1)
-            plt.imshow(x_data[index], cmap='binary', interpolation='nearest') # interpolation 缩放图片时差值方法， nearest最近的差值点作为我们像素点差值的值
-
-            plt.axis('off') # 因为小图都放到了大图，所以不需要坐标系了
-            plt.title(class_names[y_data[index]]) # 给小图们起个title
-
-    plt.show() # 展示大图
-
-# 定义class_names 衣服类型
-class_names = ['T-shirt', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal',
-               'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
-# 3行5列展示一张15张小图的大图, 还有对应的类别
-# show_imgs(3, 3, x_train, y_train, class_names)
+# 归一化前  打印训练集中最大值最小值
+print(np.max(x_train), np.min(x_train)) # 255 0
+#4、#############################分类模型之数据归一化######################################
+# 对数据做归一化, 验证集/测试集做归一化时也需要用训练集的均值和方差做，这样才能达到一个好的效果
+# x = (x - u) / std # u是均值， std是方差， 结果就是一个均值是1，方差是0 的正态分布了
+from sklearn.preprocessing import StandardScaler # 计算训练集的平均值和标准差,以便测试数据集使用相同的变换
+scaler = StandardScaler() # 初始化
+#给训练集做归一化 使用fit_transform ， x_train: [None, 28, 28] 三维矩阵转 2维(reshape(-1, 1)) --> [None, 784] ， 最后再转回来 reshape(-1, 28, 28)
+x_train_scaled = scaler.fit_transform(x_train.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28)# 对训练集做归一化, 因为是int 所以转np.float32
+# 给验证集做归一化
+x_valid_scaled = scaler.transform(x_valid.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28)
+# 给测试集做归一化, 使用和训练集一样的 均值 和 方差
+x_test_scaled = scaler.transform(x_test.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28)
+# 这样就将训练集/验证集/测试集做成了归一化后的
+# 打印归一化后， 训练集最大值和最小值
+print(np.max(x_train_scaled), np.min(x_train_scaled)) # 2.0231433 -0.8105136
 
 
-#2、#############################分类模型之模型构建######################################
+#2、#############################20层深度神经网络######################################
+model = keras.models.Sequential()
+model.add(keras.layers.Flatten(input_shape=[28, 28]))
+for _ in range(20): # 通过for循环添加20层 神经网络
+    model.add(keras.layers.Dense(100, activation='selu')) # 定义每一层大小100 ， selu是一个自带归一化功能的激活函数
+
+# AlphaDropout 强大之处 1.均值和方差不变 ， 2.归一化性质不变
+model.add(keras.layers.AlphaDropout(rate=0.5)) # 在最后层添加dropout， 一般rate=0.5此时dropout值最大
+# model.add(keras.layers.Dropout(rate=0.5)) # 另一种实现方式
+model.add(keras.layers.Dense(10, activation='softmax')) #
+
+
 """
 model = keras.models.Sequential() # 创建Sequential对象
 # 第一层
@@ -96,22 +82,24 @@ model.add(keras.layers.Dense(10, activation='softmax')) # 输出长度为10的�
 # relu: y = max(0, x) # 取最大值
 # softmax: 将向量变成概率分布。 x = [x1, x2, x3]
 #          y = [e^x1/sum, e^xx2/sum, e^x3/sum], sum = e^x1 + e^x2 + e^x3
-"""
-# 上面模型创建另一种写法
+
+# 归一化后， 重新构建模型
 model = keras.models.Sequential([keras.layers.Flatten(input_shape=[28, 28]),
                                  keras.layers.Dense(units=300, activation='relu'),
                                  keras.layers.Dense(units=100, activation='relu'),
                                  keras.layers.Dense(10, activation='softmax')
                                  ]) # 创建Sequential对象 时将值传入
+"""
+
 
 # 编译模型  计算目标函数
 # 如何选loss：reason for sparse: y-->index , 算子:  y-> one_hot ->[向量] ， 如果y已经是向量那只用 categorical_crossentropy， 反之在这里y只是个数用sparse_categorical_crossentropy
 # 调用这个model.compile函数的目的是： 将 损失函数/优化方法/metrics 加到图中去，同时将图固化下来
 model.compile(loss='sparse_categorical_crossentropy', optimizer=keras.optimizers.SGD(0.001), metrics=['accuracy']) # optimizer模型的求解方法， metrics指标
 
-print(model.layers)  # 查看模型有多少层, 目前四层
+# print(model.layers)  # 查看模型有多少层, 目前四层
 
-model.summary()  # 查看模型概况， 模型架构图 四层
+# model.summary()  # 查看模型概况， 模型架构图 四层
 
 # 235500 如何得来 [None, 784] * W + b -> [None, 300] W.shape [784, 300], b = [300]
 # 235500 = 784 x 300 + 300
@@ -131,19 +119,32 @@ model.summary()  # 查看模型概况， 模型架构图 四层
 # Trainable params: 266,610
 # Non-trainable params: 0
 
+############################## callbacks回调函数监听 ######################################
+# 在fit前调用 ， Tensorboard ,  EarlyStopping , ModelCheckpoint
+logdir = './selu-callbacks' # 定义文件夹
+if not os.path.exists(logdir):
+    os.mkdir(logdir)
+# 定义输出的model文件
+output_model_file = os.path.join(logdir, 'fashion_mnist_model.h5')
+
+callbacks = [
+    keras.callbacks.TensorBoard(logdir), # 定义callbacks
+    keras.callbacks.ModelCheckpoint(output_model_file, save_best_only=True),  # save_best_only保存最佳模型，默认最近一个
+    keras.callbacks.EarlyStopping(patience=5, min_delta=1e-3)
+]
+# 运行结束后 查看 callbacks 的信息
+# 打开TensorBoard查看： tensorboard --logdir=callbacks
 
 #3、#############################模型训练######################################
-# history ， fit返回中间运行的结果, 之所以这么称呼是因为该方法使模型“适合”训练数据：
-history = model.fit(x_train, y_train, epochs=10, validation_data=(x_valid, y_valid)) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
+# history ， fit返回中间运行的结果,  之所以这么称呼是因为该方法使模型“适合”训练数据：
+history = model.fit(x_train_scaled, y_train, epochs=100, validation_data=(x_valid_scaled, y_valid), callbacks=callbacks) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
 
 # print(history.history)
 # print(type(history)) # callbacks
 
 # 测试模型
-model.evaluate(x_test, y_test)
-
-# 保存模型
-model.save(filepath=r'./save_model/fashion_mnist')
+test_result = model.evaluate(x_test_scaled, y_test)
+print(test_result) # loss损失 和 准确率  [0.42931729555130005, 0.84579998254776]
 
 # 通过一张图打印出 训练值的变化过程
 def polt_learning_curves(history):
@@ -154,5 +155,12 @@ def polt_learning_curves(history):
 
 polt_learning_curves(history) # 打印值训练值变化图
 
+# 前期曲线不怎么变化的原因，
+     # 1、参数众多，训练不充分
+     # 2、梯度消失 的原因--》 链式法则 -- 》 类似 复合函数 f(g(x)) 的求导
 
+# 加入批归一化后
+# 前期曲线有变化，训练有效果
+     # 批归一化可以缓解 梯度消失，同样参数下明显提高正确率
 
+# 激活函数 selu 是一个自带归一化功能的激活函数， 缓解梯度下降，训练速度快比批归一化， 训练初期达到比较高的值 准确度效果相对好一点
