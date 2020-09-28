@@ -106,7 +106,7 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer=keras.optimizers
 
 #3、#############################模型训练######################################
 # history ， fit返回中间运行的结果,  之所以这么称呼是因为该方法使模型“适合”训练数据：
-history = model.fit(x_train_scaled, y_train, epochs=10, validation_data=(x_valid_scaled, y_valid)) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
+history = model.fit(x_train_scaled, y_train, epochs=200, validation_data=(x_valid_scaled, y_valid)) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
 
 # print(history.history)
 # print(type(history)) # callbacks
@@ -119,7 +119,7 @@ print(test_result) # loss损失 和 准确率  [0.42931729555130005, 0.845799982
 def polt_learning_curves(history):
     pd.DataFrame(history.history).plot(figsize=(8, 5)) # DataFrame是pd中重要的数据结构, 图大小8和5
     plt.grid(True) # 显示网格
-    plt.gca().set_ylim(0, 3)# 坐标轴范围, 如果图显示不全调整下x,y轴
+    plt.gca().set_ylim(0, 1)# 坐标轴范围, 如果图显示不全调整下x,y轴
     plt.show()
 
 polt_learning_curves(history) # 打印值训练值变化图
