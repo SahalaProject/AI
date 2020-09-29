@@ -7,3 +7,4 @@
 学习-讲解（demo）： https://tensorflow.google.cn/tutorials
 资源-讲解（各种demo）： https://tensorflow.google.cn/hub/tutorials
 学习培训： https://tensorflow.google.cn/resources/learn-ml?hl=zh_cn
+数据集：https://tensorflow.google.cn/datasets/catalog/overview

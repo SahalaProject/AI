@@ -78,8 +78,7 @@ def show_imgs(n_rows, n_cols, x_data, y_data, class_names):
     plt.show() # 展示大图
 
 # 定义class_names 衣服类型
-class_names = ['0', '1', '2', '3', '4', '5',
-               '6', '7', '8', '9']
+class_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 # 3行5列展示一张15张小图的大图, 还有对应的类别
 show_imgs(3, 3, x_train, y_train, class_names)
 
@@ -134,7 +133,7 @@ model.summary()  # 查看模型概况， 模型架构图 四层
 
 #3、#############################模型训练######################################
 # history ， fit返回中间运行的结果, 之所以这么称呼是因为该方法使模型“适合”训练数据：
-history = model.fit(x_train, y_train, epochs=100, validation_data=(x_valid, y_valid)) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
+history = model.fit(x_train, y_train, epochs=3000, validation_data=(x_valid, y_valid)) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
 
 # print(history.history)
 # print(type(history)) # callbacks

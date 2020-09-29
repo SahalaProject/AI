@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef38d544-3779-457e-81cf-647d4640a207" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tensorflow_/2zhang/load_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tensorflow_/2zhang/17_tf_keras_regression-hp_search-sklearn.py" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflow_/2zhang/17_tf_keras_regression-hp_search-sklearn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tensorflow_/2zhang/save_model/mnist/saved_model.pb" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflow_/2zhang/save_model/mnist/saved_model.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tensorflow_/2zhang/save_model/mnist/variables/variables.data-00000-of-00001" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflow_/2zhang/save_model/mnist/variables/variables.data-00000-of-00001" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tensorflow_/2zhang/save_model/mnist/variables/variables.index" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflow_/2zhang/save_model/mnist/variables/variables.index" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,43 +29,38 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="md" value="1" />
+          <entry key="md" value="3" />
           <entry key="png" value="8" />
-          <entry key="py" value="24" />
+          <entry key="py" value="30" />
+          <entry key="ss_md" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="8" />
-          <entry key="Markdown" value="1" />
-          <entry key="Python" value="24" />
+          <entry key="Markdown" value="3" />
+          <entry key="PLAIN_TEXT" value="3" />
+          <entry key="Python" value="30" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="51" />
-          <entry key="py" value="2555" />
+          <entry key="md" value="62" />
+          <entry key="py" value="2590" />
+          <entry key="ss_md" value="374" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Markdown" value="51" />
-          <entry key="Python" value="2555" />
+          <entry key="Markdown" value="62" />
+          <entry key="PLAIN_TEXT" value="374" />
+          <entry key="Python" value="2590" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="157" selection-start-line="157" selection-end-line="157" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/load_model.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -103,17 +101,18 @@
         <option value="$PROJECT_DIR$/tensorflow_/2zhang/14_tf_keras_regression-wide&amp;deep-multi-input.py" />
         <option value="$PROJECT_DIR$/tensorflow_/2zhang/14_tf_keras_regression-wide&amp;deep-multi-output.py" />
         <option value="$PROJECT_DIR$/tensorflow_/2zhang/16_tf_keras_regression-hp_search.py" />
-        <option value="$PROJECT_DIR$/tensorflow_/2zhang/17_tf_keras_regression-hp_search-sklearn.py" />
-        <option value="$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py" />
         <option value="$PROJECT_DIR$/tensorflow_/2zhang/load_model.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/ss_md" />
+        <option value="$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py" />
+        <option value="$PROJECT_DIR$/tensorflow_/2zhang/17_tf_keras_regression-hp_search-sklearn.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="621" />
-    <option name="y" value="6" />
-    <option name="width" value="1539" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="737" />
+    <option name="y" value="9" />
+    <option name="width" value="1197" />
     <option name="height" value="1012" />
   </component>
   <component name="ProjectView">
@@ -273,8 +272,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.load_model" />
-        <item itemvalue="Python.1-4_tf_keras_classification_model_mnist" />
         <item itemvalue="Python.17_tf_keras_regression-hp_search-sklearn" />
+        <item itemvalue="Python.1-4_tf_keras_classification_model_mnist" />
         <item itemvalue="Python.16_tf_keras_regression-hp_search" />
         <item itemvalue="Python.14_tf_keras_regression-wide&amp;deep-multi-output" />
       </list>
@@ -294,21 +293,21 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="621" y="6" width="1539" height="1012" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19720186" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12012645" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31128848" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.34201956" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3990878" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32915717" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.31270358" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -383,20 +382,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/16_tf_keras_regression-hp_search.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/17_tf_keras_regression-hp_search-sklearn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="107" selection-start-line="107" selection-end-line="107" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../venv_AI_tensorflow/Lib/site-packages/tensorflow/python/keras/datasets/mnist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -404,27 +389,56 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="198">
+            <caret line="9" column="58" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ss.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ss_md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../venv_AI_tensorflow/Lib/site-packages/scipy/stats/kde.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-201">
-          <caret line="212" lean-forward="true" selection-start-line="212" selection-end-line="212" />
+        <state relative-caret-position="-704">
+          <caret line="210" column="8" selection-start-line="210" selection-start-column="8" selection-end-line="210" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/17_tf_keras_regression-hp_search-sklearn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="92" selection-start-line="92" selection-end-line="92" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/1-4_tf_keras_classification_model_mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="157" selection-start-line="157" selection-end-line="157" />
+        <state relative-caret-position="277">
+          <caret line="143" selection-start-line="143" selection-end-line="143" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="88">
-            <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/tensorflow_/2zhang/16_tf_keras_regression-hp_search.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="104" selection-start-line="104" selection-end-line="104" />
         </state>
       </provider>
     </entry>

@@ -88,7 +88,7 @@ def build_model(hidden_layers=1, layear_size=30, learning_rate=3e-3):
         model.add(keras.layers.Dense(layear_size, activation='relu'))
         model.add(keras.layers.Dense(1))
         optimizer = keras.optimizers.SGD(learning_rate)
-        model.compile(loss='mse', optimizer=optimizer)
+        model.compile(loss='mean_squared_error', optimizer=optimizer)
         return model
 
 # 转换sklearn的model
@@ -96,7 +96,7 @@ sklearn_model = keras.wrappers.scikit_learn.KerasRegressor(build_fn=build_model)
 # 会调
 callbacks = [keras.callbacks.EarlyStopping(patience=5, min_delta=1e-3)]
 
-history = sklearn_model.fit(x_train_scaled, y_train, epochs = 100, validation_data = (x_valid_scaled, y_valid), callbacks = callbacks)
+history = sklearn_model.fit(x_train_scaled, y_train, epochs = 10, validation_data = (x_valid_scaled, y_valid), callbacks = callbacks)
 
 ###################################################################################################
 
