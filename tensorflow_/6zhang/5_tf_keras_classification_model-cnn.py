@@ -21,8 +21,8 @@ for module in mpl, np, pd, sklearn, tf, keras:
 
 
 """
-dropout 防止过拟合 ， 在最后一层添加
-激活函数 selu  中添加
+激活函数 selu 是一个自带归一化功能的激活函数， 缓解梯度下降, 相对批归一化BatchNormalization训练时间短，训练初期达到比较高的值 准确度效果相对好一点
+activation='relu' 改  activation='selu'
 
 打开TensorBoard查看，callbacks/下 命令行： tensorboard --logdir=callbacks (pwd的路径，相对路径无效) , 将会构建个人服务器  http://localhost:6006/ 
 """
@@ -49,47 +49,33 @@ print(np.max(x_train), np.min(x_train)) # 255 0
 from sklearn.preprocessing import StandardScaler # 计算训练集的平均值和标准差,以便测试数据集使用相同的变换
 scaler = StandardScaler() # 初始化
 #给训练集做归一化 使用fit_transform ， x_train: [None, 28, 28] 三维矩阵转 2维(reshape(-1, 1)) --> [None, 784] ， 最后再转回来 reshape(-1, 28, 28)
-x_train_scaled = scaler.fit_transform(x_train.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28)# 对训练集做归一化, 因为是int 所以转np.float32
+x_train_scaled = scaler.fit_transform(x_train.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28, 1)# 对训练集做归一化, 因为是int 所以转np.float32
 # 给验证集做归一化
-x_valid_scaled = scaler.transform(x_valid.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28)
+x_valid_scaled = scaler.transform(x_valid.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28, 1)
 # 给测试集做归一化, 使用和训练集一样的 均值 和 方差
-x_test_scaled = scaler.transform(x_test.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28)
+x_test_scaled = scaler.transform(x_test.astype(np.float32).reshape(-1, 1)).reshape(-1, 28, 28, 1)  # 与model输入层中保持一致
 # 这样就将训练集/验证集/测试集做成了归一化后的
 # 打印归一化后， 训练集最大值和最小值
 print(np.max(x_train_scaled), np.min(x_train_scaled)) # 2.0231433 -0.8105136
 
 
-#2、#############################20层深度神经网络######################################
+#2、#############################卷积网路#为了防止多层后信息损失每层filters的值翻倍#####################################
 model = keras.models.Sequential()
-model.add(keras.layers.Flatten(input_shape=[28, 28]))
-for _ in range(20): # 通过for循环添加20层 神经网络
-    model.add(keras.layers.Dense(100, activation='selu')) # 定义每一层大小100 ， selu是一个自带归一化功能的激活函数
 
-# AlphaDropout 强大之处 1.均值和方差不变 ， 2.归一化性质不变
-model.add(keras.layers.AlphaDropout(rate=0.5)) # 在最后层添加dropout， 一般rate=0.5此时dropout值最大
-# model.add(keras.layers.Dropout(rate=0.5)) # 另一种实现方式
-model.add(keras.layers.Dense(10, activation='softmax')) #
+model.add(keras.layers.Conv2D(filters=32, kernel_size=3, padding='same', activation='selu', input_shape=(28, 28, 1)))  # filters=32 输出有多少个通道，也就是有多少个卷积核；  kernel_size=3定义卷积核的大小； padding='same'是给输入加pading让输入输出一样； input_shape=(28, 28, 1)定义输入大小
+model.add(keras.layers.Conv2D(filters=32, kernel_size=3, padding='same', activation='selu')) # 第二层卷积层
+model.add(keras.layers.MaxPool2D(pool_size=2)) # 添加一个MaxPool2D层, 对于Pool2D来说他的步长和size是相等的，所以只需要设定一个就可以
+# 下面将上面的两层卷积和Pool2D层 复制两边，去掉input_shape
+model.add(keras.layers.Conv2D(filters=64, kernel_size=3, padding='same', activation='selu',))
+model.add(keras.layers.Conv2D(filters=64, kernel_size=3, padding='same', activation='selu'))
+model.add(keras.layers.MaxPool2D(pool_size=2))
+model.add(keras.layers.Conv2D(filters=128, kernel_size=3, padding='same', activation='selu',))
+model.add(keras.layers.Conv2D(filters=128, kernel_size=3, padding='same', activation='selu'))
+model.add(keras.layers.MaxPool2D(pool_size=2))
 
-
-"""
-model = keras.models.Sequential() # 创建Sequential对象
-# 第一层
-model.add(keras.layers.Flatten(input_shape=[28, 28])) # 添加层，首先输入层 通过Flatten将输入的图片，将28x28的二维矩阵 展平 成 28x28的 一维向量
-# 全连接层： 就是神经网络中最普通的一种神经网络，通过层次放置神经网络，下一层的所有单元 和上一层的所有单元都一一的进行连接
-model.add(keras.layers.Dense(units=300, activation='relu')) # 加入全连接层 单元数300, activation计划函数
-model.add(keras.layers.Dense(units=100, activation='relu')) # 100个单元去和300个全连接
-model.add(keras.layers.Dense(10, activation='softmax')) # 输出长度为10的向量
-# relu: y = max(0, x) # 取最大值
-# softmax: 将向量变成概率分布。 x = [x1, x2, x3]
-#          y = [e^x1/sum, e^xx2/sum, e^x3/sum], sum = e^x1 + e^x2 + e^x3
-
-# 归一化后， 重新构建模型
-model = keras.models.Sequential([keras.layers.Flatten(input_shape=[28, 28]),
-                                 keras.layers.Dense(units=300, activation='relu'),
-                                 keras.layers.Dense(units=100, activation='relu'),
-                                 keras.layers.Dense(10, activation='softmax')
-                                 ]) # 创建Sequential对象 时将值传入
-"""
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(128, activation='selu')) # 全连接层
+model.add(keras.layers.Dense(10, activation='softmax')) # 输出层
 
 
 # 编译模型  计算目标函数
@@ -101,27 +87,10 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer=keras.optimizers
 
 # model.summary()  # 查看模型概况， 模型架构图 四层
 
-# 235500 如何得来 [None, 784] * W + b -> [None, 300] W.shape [784, 300], b = [300]
-# 235500 = 784 x 300 + 300
-# Model: "sequential"
-# _________________________________________________________________
-# Layer (type)                 Output Shape              Param #
-# =================================================================
-# flatten (Flatten)            (None, 784)               0
-# _________________________________________________________________
-# dense (Dense)                (None, 300)               235500
-# _________________________________________________________________
-# dense_1 (Dense)              (None, 100)               30100
-# _________________________________________________________________
-# dense_2 (Dense)              (None, 10)                1010
-# =================================================================
-# Total params: 266,610
-# Trainable params: 266,610
-# Non-trainable params: 0
 
 ############################## callbacks回调函数监听 ######################################
 # 在fit前调用 ， Tensorboard ,  EarlyStopping , ModelCheckpoint
-logdir = './selu-callbacks' # 定义文件夹
+logdir = './cnn-selu-callbacks' # 定义文件夹
 if not os.path.exists(logdir):
     os.mkdir(logdir)
 # 定义输出的model文件
@@ -130,14 +99,14 @@ output_model_file = os.path.join(logdir, 'fashion_mnist_model.h5')
 callbacks = [
     keras.callbacks.TensorBoard(logdir), # 定义callbacks
     keras.callbacks.ModelCheckpoint(output_model_file, save_best_only=True),  # save_best_only保存最佳模型，默认最近一个
-    # keras.callbacks.EarlyStopping(patience=5, min_delta=1e-3)
+    keras.callbacks.EarlyStopping(patience=5, min_delta=1e-3)
 ]
 # 运行结束后 查看 callbacks 的信息
 # 打开TensorBoard查看： tensorboard --logdir=callbacks
 
 #3、#############################模型训练######################################
 # history ， fit返回中间运行的结果,  之所以这么称呼是因为该方法使模型“适合”训练数据：
-history = model.fit(x_train_scaled, y_train, epochs=10, validation_data=(x_valid_scaled, y_valid), callbacks=callbacks) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
+history = model.fit(x_train_scaled, y_train, epochs=5, validation_data=(x_valid_scaled, y_valid), callbacks=callbacks) # epochs遍历数据集的次数, 每隔一段时间将会对验证集做验证
 
 # print(history.history)
 # print(type(history)) # callbacks
@@ -150,17 +119,8 @@ print(test_result) # loss损失 和 准确率  [0.42931729555130005, 0.845799982
 def polt_learning_curves(history):
     pd.DataFrame(history.history).plot(figsize=(8, 5)) # DataFrame是pd中重要的数据结构, 图大小8和5
     plt.grid(True) # 显示网格
-    plt.gca().set_ylim(0, 4)# 坐标轴范围, 如果图显示不全调整下x,y轴
+    plt.gca().set_ylim(0, 3)# 坐标轴范围, 如果图显示不全调整下x,y轴
     plt.show()
 
 polt_learning_curves(history) # 打印值训练值变化图
 
-# 前期曲线不怎么变化的原因，
-     # 1、参数众多，训练不充分
-     # 2、梯度消失 的原因--》 链式法则 -- 》 类似 复合函数 f(g(x)) 的求导
-
-# 加入批归一化后
-# 前期曲线有变化，训练有效果
-     # 批归一化可以缓解 梯度消失，同样参数下明显提高正确率
-
-# 激活函数 selu 是一个自带归一化功能的激活函数， 缓解梯度下降，训练速度快比批归一化， 训练初期达到比较高的值 准确度效果相对好一点
